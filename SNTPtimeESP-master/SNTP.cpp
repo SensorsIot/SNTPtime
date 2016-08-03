@@ -1,6 +1,7 @@
 /*
+SNTP library for ESP8266
 
-SNTPtime for ESP8266
+
 This routine gets the unixtime from a NTP server and adjusts it to the time zone and the
 Middle European summer time if requested
    
@@ -24,7 +25,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-V1.0 2016-6-28
+V1.0 2016-8-3
 
 */
 
@@ -37,7 +38,7 @@ const int NTP_PACKET_SIZE = 48;
 byte _packetBuffer[ NTP_PACKET_SIZE];
 static const uint8_t _monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-int _timeZone=0;
+double _timeZone=0;
 char *_NTPserver="";
 
 // NTPserver is the name of the NTPserver
@@ -127,7 +128,7 @@ boolean SNTPtime::daylightSavingTime(unsigned long _timeStamp) {
 }
 
 
-unsigned long SNTPtime::adjustTimeZone(unsigned long _timeStamp, int _timeZone, byte _DayLightSaving) {
+unsigned long SNTPtime::adjustTimeZone(unsigned long _timeStamp, double _timeZone, byte _DayLightSaving) {
   strDateTime _tempDateTime;
   _timeStamp += _timeZone *  3600; // adjust timezone
   if (_DayLightSaving ==1 && summerTime(_timeStamp)) _timeStamp += 3600; // European Summer time
@@ -144,7 +145,7 @@ unsigned long entry=millis();
 	do {
 		configTime(0,0,_NTPserver);
   		delay(500);
-	} while (millis()-entry<5000 && time(NULL)<100);
+	} while (millis()-entry<5000 && time(NULL)<946684800); // 1.1.2000
 	if (time(NULL)>100) return true;
 	else return false;
 }
@@ -154,11 +155,13 @@ unsigned long entry=millis();
 // if _isDayLightSaving is 1, time will be adjusted to European Summer time
 
 
-strDateTime SNTPtime::getTime(int _timeZone, boolean _DayLightSaving)
+strDateTime SNTPtime::getTime(double _timeZone, boolean _DayLightSaving)
 {
 	unsigned long  _unixTime = time(NULL);
+	Serial.println(_unixTime);
 	unsigned long  _currentTimeStamp = adjustTimeZone(_unixTime, _timeZone, _DayLightSaving);
 	strDateTime _dateTime = ConvertUnixTimestamp(_currentTimeStamp);
+	
 	return _dateTime;
 }
 

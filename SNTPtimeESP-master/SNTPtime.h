@@ -1,6 +1,7 @@
 /*
+SNTP library for ESP8266
 
-NTPtime for ESP8266
+
 This routine gets the unixtime from a NTP server and adjusts it to the time zone and the
 Middle European summer time if requested
    
@@ -24,10 +25,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-V1.0 2016-6-28
-
+V1.0 2016-8-3
 
 */
+
 #ifndef NTPtime_h
 #define NTPtime_h
 
@@ -38,6 +39,7 @@ V1.0 2016-6-28
 
 
 #define DEBUG_ON
+
 
 
 struct strDateTime
@@ -55,7 +57,7 @@ struct strDateTime
 class SNTPtime {
   public:
     SNTPtime(char *NTPServer);
-    strDateTime getTime(int _timeZone, boolean _DayLightSaving);
+    strDateTime getTime(double _timeZone, boolean _DayLightSaving);
     void printDateTime(strDateTime _dateTime);
     boolean setSNTPtime();
 
@@ -63,6 +65,6 @@ class SNTPtime {
     strDateTime ConvertUnixTimestamp( unsigned long _tempTimeStamp);
     boolean summerTime(unsigned long _timeStamp );
     boolean daylightSavingTime(unsigned long _timeStamp);
-    unsigned long adjustTimeZone(unsigned long _timeStamp, int _timeZone, byte _DayLightSavingSaving);
+    unsigned long adjustTimeZone(unsigned long _timeStamp, double _timeZone, byte _DayLightSavingSaving);
 };
 #endif
