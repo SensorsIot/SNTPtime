@@ -70,7 +70,7 @@ void setup() {
 void loop() {
 
         // first parameter: Time zone; second parameter: 1 for European summer time; 2 for US daylight saving time (not implemented yet)
-        dateTime = NTPch.getTime(1, 1); // get time from internal clock
+        dateTime = NTPch.getTime(1.0, 1); // get time from internal clock
         NTPch.printDateTime(dateTime);
 
         byte actualHour = dateTime.hour;

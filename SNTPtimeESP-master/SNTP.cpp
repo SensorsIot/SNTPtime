@@ -38,7 +38,6 @@ const int NTP_PACKET_SIZE = 48;
 byte _packetBuffer[ NTP_PACKET_SIZE];
 static const uint8_t _monthDays[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-double _timeZone=0;
 char *_NTPserver="";
 
 // NTPserver is the name of the NTPserver
